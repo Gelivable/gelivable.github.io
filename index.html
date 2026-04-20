@@ -1,85 +1,150 @@
 <!doctype html>
-<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
-<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on http://github.com/jonrohan -->
-<html>
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-
-  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen"/>
-  <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script type="text/javascript" src="javascripts/script.js"></script>
-
-  <title>Mr Gelivable</title>
-  <meta name="description" content="About Gelivable">
-
   <meta name="viewport" content="width=device-width,initial-scale=1">
-
+  <title>CryptoInsight - 加密货币市场分析</title>
+  <meta name="description" content="实时加密货币价格、市场分析与趋势洞察">
+  <link rel="stylesheet" href="stylesheets/stylesheet.css">
+  <script src="javascripts/main.js" defer></script>
 </head>
-
 <body>
 
-  <div class="wrapper">
-    <header>
-      <h1 class="title">Mr Gelivable</h1>
-    </header>
-    <div id="container">
-      <p class="tagline">About Gelivable</p>
-      <div id="main" role="main">
-        <div class="download-bar">
-        <div class="inner">
-          <a href="https://github.com/Gelivable" class="code">View Mr Gelivable on GitHub</a>
-        </div>
-        <span class="blc"></span><span class="trc"></span>
-        </div>
-        <article class="markdown-body">
-          <h3>Welcome to GitHub Pages.</h3>
-
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-        </article>
-      </div>
+  <div id="market-bar">
+    <div class="bar-inner">
+      <span>总市值: <strong id="bar-mcap">--</strong></span>
+      <span>24H 成交量: <strong id="bar-vol">--</strong></span>
+      <span>BTC 占比: <strong id="bar-btc-dom">--</strong></span>
+      <span class="bar-time">更新: <span id="last-update">--</span></span>
     </div>
+  </div>
+
+  <div class="wrapper">
+
+    <header>
+      <div class="logo-icon">₿</div>
+      <h1 class="title">CryptoInsight</h1>
+      <p class="subtitle">加密货币市场分析平台</p>
+    </header>
+
+    <main id="main" role="main">
+
+      <!-- Live Market Table -->
+      <section class="section">
+        <h2 class="section-title">实时行情 <span class="live-dot"></span></h2>
+        <div class="table-wrap">
+          <table id="market-table">
+            <thead>
+              <tr>
+                <th class="text-left">#</th>
+                <th class="text-left">名称</th>
+                <th>价格 (USD)</th>
+                <th>24h 涨跌</th>
+                <th>7d 涨跌</th>
+                <th>市值</th>
+                <th>24h 成交量</th>
+              </tr>
+            </thead>
+            <tbody id="market-tbody">
+              <tr><td colspan="7" class="loading">正在加载行情数据...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Overview Cards -->
+      <section class="section">
+        <h2 class="section-title">市场概览</h2>
+        <div class="cards">
+          <div class="card">
+            <div class="card-label">恐慌贪婪指数</div>
+            <div class="card-value" id="fg-value">--</div>
+            <div class="card-sub" id="fg-label">--</div>
+          </div>
+          <div class="card">
+            <div class="card-label">比特币 (BTC)</div>
+            <div class="card-value" id="btc-price">--</div>
+            <div class="card-sub" id="btc-change">--</div>
+          </div>
+          <div class="card">
+            <div class="card-label">以太坊 (ETH)</div>
+            <div class="card-value" id="eth-price">--</div>
+            <div class="card-sub" id="eth-change">--</div>
+          </div>
+          <div class="card">
+            <div class="card-label">全球总市值</div>
+            <div class="card-value" id="total-mcap">--</div>
+            <div class="card-sub">加密货币市场</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Analysis -->
+      <section class="section">
+        <h2 class="section-title">分析要点</h2>
+        <div class="analysis-grid">
+          <div class="analysis-card">
+            <h3>比特币 (BTC)</h3>
+            <p>作为市值最大的加密货币，比特币主导市场整体走势。BTC 价格变动通常对主流币种产生联动影响，其主导率（Dominance）是判断资金轮动方向的关键指标。</p>
+          </div>
+          <div class="analysis-card">
+            <h3>以太坊 (ETH)</h3>
+            <p>以太坊是最重要的智能合约平台，是 DeFi、NFT 与 Web3 应用的核心基础设施。ETH/BTC 汇率走势是衡量"山寨季"启动与否的重要参考。</p>
+          </div>
+          <div class="analysis-card">
+            <h3>恐慌贪婪指数</h3>
+            <p>综合波动率、市场动量、社交情绪等多维指标量化市场心理。0–25 为极度恐惧，75–100 为极度贪婪。极度恐惧往往意味着潜在机会，极度贪婪则需警惕回调风险。</p>
+          </div>
+          <div class="analysis-card">
+            <h3>市值与成交量</h3>
+            <p>总市值反映加密市场整体规模，24h 成交量衡量市场活跃度。价量齐升通常是趋势延续信号；量缩价涨则需关注动能是否衰减。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tools -->
+      <section class="section">
+        <h2 class="section-title">常用工具</h2>
+        <div class="tools-grid">
+          <a href="https://www.tradingview.com" class="tool-card" target="_blank" rel="noopener">
+            <span class="tool-name">TradingView</span>
+            <span class="tool-desc">专业图表 &amp; 技术分析</span>
+          </a>
+          <a href="https://coinmarketcap.com" class="tool-card" target="_blank" rel="noopener">
+            <span class="tool-name">CoinMarketCap</span>
+            <span class="tool-desc">市值排行 &amp; 市场数据</span>
+          </a>
+          <a href="https://glassnode.com" class="tool-card" target="_blank" rel="noopener">
+            <span class="tool-name">Glassnode</span>
+            <span class="tool-desc">链上数据分析</span>
+          </a>
+          <a href="https://defillama.com" class="tool-card" target="_blank" rel="noopener">
+            <span class="tool-name">DefiLlama</span>
+            <span class="tool-desc">DeFi TVL &amp; 协议数据</span>
+          </a>
+          <a href="https://cryptoquant.com" class="tool-card" target="_blank" rel="noopener">
+            <span class="tool-name">CryptoQuant</span>
+            <span class="tool-desc">交易所流量 &amp; 矿工数据</span>
+          </a>
+          <a href="https://alternative.me/crypto/fear-and-greed-index/" class="tool-card" target="_blank" rel="noopener">
+            <span class="tool-name">Fear &amp; Greed</span>
+            <span class="tool-desc">市场情绪指数</span>
+          </a>
+        </div>
+      </section>
+
+      <p class="disclaimer">免责声明：本站数据仅供参考，不构成任何投资建议。加密货币市场波动剧烈，投资需自行承担风险。</p>
+
+    </main>
+
     <footer>
-      <div class="owner">
-
-      <p><a href="https://github.com/Gelivable" class="avatar"><img src="https://secure.gravatar.com/avatar/1de41d903cb304f6f26647a1dbae0284?s=30&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png" width="48" height="48"/></a>View <a href="https://github.com/Gelivable">Gelivable</a> on <a href="https://www.github.com">GitHub</a></p>
-
-      </div>
-      <div class="creds">
-        <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br/>theme by <a href="http://twitter.com/jonrohan/">Jon Rohan</a></small>
+      <div class="footer-inner">
+        <span>数据来源: <a href="https://www.coingecko.com" target="_blank" rel="noopener">CoinGecko</a> &amp; <a href="https://alternative.me" target="_blank" rel="noopener">Alternative.me</a></span>
+        <span><a href="https://github.com/Gelivable" target="_blank" rel="noopener">GitHub: Gelivable</a></span>
       </div>
     </footer>
-  </div>
-  <div class="current-section">
-    <a href="#top">Scroll to top</a>
-    <a href="https://github.com/Gelivable/gelivable.github.io/tarball/master" class="tar">tar</a><a href="https://github.com/Gelivable/gelivable.github.io/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
-    <p class="name"></p>
-  </div>
 
-  
+  </div>
 </body>
 </html>
